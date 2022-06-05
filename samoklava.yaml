@@ -1,8 +1,8 @@
 units:
   kx: cx
   ky: cy
-  px: 4
-  py: 4
+  px: 2
+  py: 2
 points:
   key:
     footprints:
@@ -10,7 +10,7 @@ points:
         type: alps
         params:
           hotswap: false
-          reverse: true
+          reverse: false
           keycaps: true
         nets:
           # from: P1
@@ -25,7 +25,7 @@ points:
           from: =colrow
           to: =row_net
         anchor:
-          shift: [0, -5]
+          shift: [0, -8]
   zones:
     matrix:
       key.padding: ky
@@ -36,24 +36,22 @@ points:
           key:
             column_net: P20
         ring:
-          rotate: -5
-          origin: [-12, -19]
-          stagger: 0.7 ky
+          stagger: 0ky
           spread: kx
           key:
             column_net: P19
         middle:
-          stagger: 0.4 ky
+          stagger: 0 ky
           spread: kx
           key:
             column_net: P18
         index:
-          stagger: -0.4 ky
+          stagger: -0 ky
           spread: kx
           key:
             column_net: P15
         inner:
-          stagger: -0.1 ky
+          stagger: -0 ky
           spread: kx
           key:
             column_net: P14
@@ -67,28 +65,30 @@ points:
     thumbfan:
       anchor:
         ref: matrix_inner_bottom
-        shift: [-.5 kx, -1.6 ky]
+        shift: [-2.5kx, -1.2 ky]
       columns:
         near:
-          spread: kx
-          rotate: -15
+          spread: 1.5kx
           origin: [-0.5 kx, -0.5 ky]
           key:
             column_net: P18
         home:
-          spread: kx
+          spread: 1.5kx
           origin: [-0.5 kx, -0.5 ky]
           key:
             column_net: P15
       rows:
         thumb:
           row_net: P7
+  mirror:
+    ref: matrix_inner_home
+    distance: 2.6kx
 outlines:
   # board dimensions according to JLCPCB: 122.28 mm x 101.05 mm
   exports:
     raw:
       - type: keys
-        side: left
+        side: both
         size: [kx + px, ky + py]
         corner: px
     thumbfan_glue:
@@ -96,49 +96,36 @@ outlines:
         points:
           - ref: matrix_inner_bottom
             shift: [0.5 kx + 0.5px, -0.5 ky + 0.5 py]
+          - ref: thumbfan_home_thumb
+            shift: [0.5 kx + 0.5 px, 0.5 ky + 0.5 py]
+          - ref: thumbfan_home_thumb
+            shift: [0.5 kx + 0.5 px, -0.5 ky - 0.5 py]
           - ref: thumbfan_near_thumb
-            shift: [-0.5 kx + 0.5 px, -0.5 ky - 0.5 py]
-          - ref: matrix_pinky_bottom
+            shift: [-0.5 kx - 0.5 px, -0.5 ky - 0.5 py]
+          - ref: matrix_middle_bottom
             shift: [0.5 kx - 0.5 py, -0.5 ky - 0.5 py]
-          - ref: matrix_pinky_home
+          - ref: matrix_middle_home
           - ref: matrix_inner_home
-    patch_outer:
-      - type: polygon
-        points:
-          - ref: matrix_ring_top
-          - ref: matrix_ring_bottom
-          - ref: matrix_pinky_bottom
-            shift: [-0.5 (kx + px), 0]
-          - ref: matrix_pinky_top
-            shift: [-0.5 (kx + px), 0]
-    patch_inner:
-      - type: polygon
-        points:
-          - ref: matrix_inner_top
-            shift: [0.5 (kx + px), 0]
-          - ref: matrix_inner_bottom
-            shift: [0.5 (kx + px), 0]
-          - ref: matrix_index_bottom
-          - ref: matrix_index_top
+
     controller_area:
       main:
         type: rectangle
         anchor:
           ref:
             - matrix_inner_top
-          shift: [0 kx, -4.05 ky]
+          shift: [9.5, -3.9 ky]
         size: [32, 76.5]
         corner: px
     switches:
       main:
         type: keys
-        side: left
-        size: 14
+        side: both
+        size: [15.5, 13]
         bound: false
     keycaps:
       main:
         type: keys
-        side: left
+        side: both
         size: [kx, ky]
         bound: false
         corner: 1
@@ -146,14 +133,7 @@ outlines:
       main:
         type: outline
         name: raw
-      patch_inner:
-        type: outline
-        name: patch_inner
-        operation: add
-      patch_outer:
-        type: outline
-        name: patch_outer
-        operation: add
+
       thumbfan_glue:
         type: outline
         name: thumbfan_glue
@@ -171,13 +151,13 @@ outlines:
         type: circle
         anchor:
           - ref: matrix_ring_home
-            shift: [-0.5 kx, 0 ky]
+            shift: [-0.5 kx, 0.5 ky]
         radius: 1.05
       bottom_left:
         type: circle
         anchor:
           - ref: matrix_pinky_bottom
-            shift: [0.5 kx, 0]
+            shift: [0.5 kx, 0.5ky]
         radius: 1.05
       top_right:
         type: circle
@@ -243,7 +223,6 @@ outlines:
 pcbs:
   top_plate:
     # include JLCJLCJLCJLC text somewhere
-    include_keys: false
     outlines:
       edge:
         outline: plate
@@ -281,16 +260,7 @@ pcbs:
             - matrix_inner_top
           shift: [20, -11]
           rotate: 270
-      mcu_r:
-        type: promicro
-        params:
-          orientation: down
-          batteryPins: true
-        anchor:
-          ref:
-            - matrix_inner_top
-          shift: [22.5, -12.25]
-          rotate: 270
+
       pad_plus:
         type: pad
         anchor:
