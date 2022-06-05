@@ -28,6 +28,8 @@ points:
           shift: [0, -5]
   zones:
     matrix:
+      # anchor:
+      #   rotate: 5
       key.padding: ky
       columns:
         pinky:
@@ -36,19 +38,17 @@ points:
           key:
             column_net: P20
         ring:
-          rotate: -5
-          origin: [-12, -19]
           stagger: 0.7 ky
           spread: kx
           key:
             column_net: P19
         middle:
-          stagger: 0.4 ky
+          stagger: 0.2 ky
           spread: kx
           key:
             column_net: P18
         index:
-          stagger: -0.4 ky
+          stagger: -0.2 ky
           spread: kx
           key:
             column_net: P15
@@ -67,7 +67,7 @@ points:
     thumbfan:
       anchor:
         ref: matrix_inner_bottom
-        shift: [-.5 kx, -1.6 ky]
+        shift: [-1.5 kx, -1 ky]
       columns:
         near:
           spread: kx
@@ -77,9 +77,16 @@ points:
             column_net: P18
         home:
           spread: kx
+          rotate: -15
           origin: [-0.5 kx, -0.5 ky]
           key:
             column_net: P15
+        far:
+          spread: kx
+          rotate: -15
+          origin: [-0.5 kx, -0.5 ky]
+          key:
+            column_net: P14
       rows:
         thumb:
           row_net: P7
@@ -96,6 +103,10 @@ outlines:
         points:
           - ref: matrix_inner_bottom
             shift: [0.5 kx + 0.5px, -0.5 ky + 0.5 py]
+          - ref: thumbfan_far_thumb
+            shift: [0.5 kx - 0.5px, 0.5 ky + 0.5 py]
+          - ref: thumbfan_far_thumb
+            shift: [0.5 kx - 0.5px, -0.5 ky - 0.5 py]
           - ref: thumbfan_near_thumb
             shift: [-0.5 kx + 0.5 px, -0.5 ky - 0.5 py]
           - ref: matrix_pinky_bottom
@@ -194,7 +205,7 @@ outlines:
       thumb:
         type: circle
         anchor:
-          - ref: thumbfan_home_thumb
+          - ref: thumbfan_far_thumb
             shift: [-0.55 kx, 0]
         radius: 1.05
     mounting_holes:
@@ -420,7 +431,7 @@ pcbs:
             - matrix_pinky_bottom
           shift: [0.75 kx, 0]
         params:
-          text: "lil skinny bois v0.1\\nby sander"
+          text: "samoklava v0.1\\nby soundmonster"
           justify: left
       info_r:
         type: text
@@ -430,5 +441,6 @@ pcbs:
           shift: [0.75 kx, 0]
         params:
           layer: B.SilkS
-          text: "lil skinny bois v0.1\\nby sander"
+          text: "samoklava v0.1\\nby soundmonster"
           justify: right mirror
+
