@@ -1,15 +1,15 @@
 units:
   kx: cx
   ky: cy
-  px: 2
-  py: 2
+  px: 4
+  py: 4
 points:
   key:
     footprints:
-      choc_hotswap:
-        type: choc
+      alps:
+        type: alps
         params:
-          hotswap: true
+          hotswap: false
           reverse: true
           keycaps: true
         nets:
