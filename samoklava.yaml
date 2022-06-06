@@ -84,7 +84,6 @@ points:
     ref: matrix_inner_home
     distance: 2.6kx
 outlines:
-  # board dimensions according to JLCPCB: 122.28 mm x 101.05 mm
   exports:
     raw:
       - type: keys
@@ -94,28 +93,14 @@ outlines:
     thumbfan_glue:
       - type: polygon
         points:
-          - ref: matrix_inner_bottom
-            shift: [0.5 kx + 0.5px, -0.5 ky + 0.5 py]
-          - ref: thumbfan_home_thumb
-            shift: [0.5 kx + 0.5 px, 0.5 ky + 0.5 py]
-          - ref: thumbfan_home_thumb
-            shift: [0.5 kx + 0.5 px, -0.5 ky - 0.5 py]
+          - ref: matrix_index_top
+            shift: [-.5kx - .5px, .5ky + .5py]
+          - ref: mirror_matrix_index_top
+            shift: [-.5kx - .5px, .5ky + .5py]
+          - ref: mirror_thumbfan_near_thumb
+            shift: [-0.5 kx - 0.5 px, -0.5 ky - 0.5 py]
           - ref: thumbfan_near_thumb
             shift: [-0.5 kx - 0.5 px, -0.5 ky - 0.5 py]
-          - ref: matrix_middle_bottom
-            shift: [0.5 kx - 0.5 py, -0.5 ky - 0.5 py]
-          - ref: matrix_middle_home
-          - ref: matrix_inner_home
-
-    controller_area:
-      main:
-        type: rectangle
-        anchor:
-          ref:
-            - matrix_inner_top
-          shift: [9.5, -3.9 ky]
-        size: [32, 76.5]
-        corner: px
     switches:
       main:
         type: keys
@@ -133,7 +118,6 @@ outlines:
       main:
         type: outline
         name: raw
-
       thumbfan_glue:
         type: outline
         name: thumbfan_glue
@@ -142,15 +126,17 @@ outlines:
       main:
         type: outline
         name: keywell
-      controller:
-        type: outline
-        name: controller_area
-        operation: add
     screw_holes:
       top_left:
         type: circle
         anchor:
           - ref: matrix_ring_home
+            shift: [-0.5 kx, 0.5 ky]
+        radius: 1.05
+      top_left_mirror:
+        type: circle
+        anchor:
+          - ref: mirror_matrix_ring_home
             shift: [-0.5 kx, 0.5 ky]
         radius: 1.05
       bottom_left:
@@ -159,23 +145,35 @@ outlines:
           - ref: matrix_pinky_bottom
             shift: [0.5 kx, 0.5ky]
         radius: 1.05
+      bottom_left_mirror:
+        type: circle
+        anchor:
+          - ref: mirror_matrix_pinky_bottom
+            shift: [0.5 kx, 0.5ky]
+        radius: 1.05
       top_right:
         type: circle
         anchor:
           - ref: matrix_inner_top
-            shift: [-0.5 kx, 0]
+            shift: [-0.5 kx, -0.5ky]
         radius: 1.05
-      palm:
+      top_right_mirror:
         type: circle
         anchor:
-          - ref: matrix_index_bottom
-            shift: [0, -1.06 ky]
+          - ref: mirror_matrix_inner_top
+            shift: [-0.5 kx, -0.5ky]
         radius: 1.05
       thumb:
         type: circle
         anchor:
           - ref: thumbfan_home_thumb
-            shift: [-0.55 kx, 0]
+            shift: [-0.75 kx, 0]
+        radius: 1.05
+      thumb_mirror:
+        type: circle
+        anchor:
+          - ref: mirror_thumbfan_home_thumb
+            shift: [-0.75 kx, 0]
         radius: 1.05
     mounting_holes:
       $extends: outlines.exports.screw_holes
@@ -185,9 +183,15 @@ outlines:
         radius: 2.05
       top_right:
         radius: 2.05
-      palm:
-        radius: 2.05
       thumb:
+        radius: 2.05
+      top_left_mirror:
+        radius: 2.05
+      bottom_left_mirror:
+        radius: 2.05
+      top_right_mirror:
+        radius: 2.05
+      thumb_mirror:
         radius: 2.05
     bottom_outline:
       main:
@@ -250,11 +254,11 @@ pcbs:
         layer: Edge.Cuts
         # TODO there's a way to add stuff to the silkscreen layer
     footprints:
-      mcu_l:
+      mcu:
         type: promicro
         params:
           orientation: up
-          batteryPins: true
+          batteryPins: false
         anchor:
           ref:
             - matrix_inner_top
@@ -291,86 +295,6 @@ pcbs:
           text: "B-"
         nets:
           net: Bminus
-      trrs_l:
-        type: trrs
-        anchor:
-          ref:
-            - matrix_inner_bottom
-          shift: [32, -15]
-          rotate: 270
-        params:
-          reverse: false
-          symmetric: false
-        # The naming of the nets on this footprint is different from the Corne schematics.
-        nets:
-          A: ""
-          B: VCC
-          C: GND
-          D: P0
-      trrs_r:
-        type: trrs
-        anchor:
-          ref:
-            - matrix_inner_bottom
-          shift: [32, -13]
-          rotate: 270
-        params:
-          reverse: true
-          symmetric: false
-        # The naming of the nets on this footprint is different from the Corne schematics.
-        nets:
-          A: ""
-          B: VCC
-          C: GND
-          D: P0
-      jumper_l:
-        type: jumper
-        anchor:
-          ref:
-            - matrix_inner_bottom
-          shift: [23.5, 0]
-          rotate: 270
-        params:
-          side: B
-        nets:
-          from: Braw
-          to: Bplus
-      jumper_r:
-        type: jumper
-        anchor:
-          ref:
-            - matrix_inner_bottom
-          shift: [23.5, 0]
-          rotate: 270
-        params:
-          side: F
-        nets:
-          from: Braw
-          to: Bplus
-      slider_l:
-        type: slider
-        anchor:
-          ref:
-            - matrix_inner_bottom
-          shift: [30, 0]
-          rotate: 270
-        params:
-          side: F
-        nets:
-          from: Braw
-          to: Bplus
-      slider_r:
-        type: slider
-        anchor:
-          ref:
-            - matrix_inner_bottom
-          shift: [30, 0]
-          rotate: 270
-        params:
-          side: B
-        nets:
-          from: Braw
-          to: Bplus
       reset:
         type: button
         anchor:
@@ -392,13 +316,3 @@ pcbs:
         params:
           text: "lil skinny bois v0.1\\nby sander"
           justify: left
-      info_r:
-        type: text
-        anchor:
-          ref:
-            - matrix_pinky_bottom
-          shift: [0.75 kx, 0]
-        params:
-          layer: B.SilkS
-          text: "lil skinny bois v0.1\\nby sander"
-          justify: right mirror
